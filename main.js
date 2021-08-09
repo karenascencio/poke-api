@@ -16,7 +16,14 @@ async function bringPokemons(pokemonAPI){
 async function getPokemon(pokemonURL){
     const pokemonObj = await fetch(pokemonURL);
     const pokeJSON = await pokemonObj.json();
-    console.log(pokeJSON);
+    const {name, sprites, stats} = pokeJSON
+    const { front_default } = sprites //img
+    const statsObject = stats.reduce( (accum, item) => {
+        return {...accum, [item.stat.name]: item.base_stat}
+    },{})
+    statsObject.name = name
+    statsObject.image = front_default
+    return statsObject
 };
 
 bringPokemons(pokemonAPI);
